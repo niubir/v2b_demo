@@ -3,7 +3,7 @@
   "name_cn": "V2BDemo",
   "protocol": "V2BDemo",
   "version": "1.0.0",
-  "description": "this is Dragon VPN",
+  "description": "this is V2B Demo",
   "debug": {
     "webDevToolShortKey": "CommandOrControl+Shift+F11",
     "loggerShortKey": "CommandOrControl+Shift+F12"
@@ -50,7 +50,7 @@
     "nodemon": "^3.0.1"
   },
   "build": {
-    "appId": "xyz.dragon.www",
+    "appId": "xyz.v2bdemo.www",
     "productName": "V2BDemo",
     "artifactName": "V2BDemo-setup-${os}-${arch}-v${version}.${ext}",
     "copyright": "Copyright © 2022 api.mdkpbk.xyz All Rights Reserved",
