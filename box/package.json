@@ -1,0 +1,123 @@
+{
+  "name": "v2b",
+  "name_cn": "V2BDemo",
+  "protocol": "V2BDemo",
+  "version": "1.0.0",
+  "description": "this is Dragon VPN",
+  "debug": {
+    "webDevToolShortKey": "CommandOrControl+Shift+F11",
+    "loggerShortKey": "CommandOrControl+Shift+F12"
+  },
+  "main": "main.js",
+  "scripts": {
+    "icons:logo": "electron-icon-builder --input=./build/image/logo.png --output=./build/image/logo --flatten",
+    "icons:window": "cp ./build/image/logo/icons/48x48.png ./static/icons/window.png",
+    "icons:loading": "cp ./build/image/logo/icons/128x128.png ./static/loading/logo.png",
+    "icons:tray:win": "electron-icon-builder --input=./build/image/tray.png --output=./build/image/tray --flatten && cp ./build/image/tray/icons/32x32.png ./static/icons/tray.png",
+    "icons:tray:mac": "electron-icon-builder --input=./build/image/tray.png --output=./build/image/tray --flatten && cp ./build/image/tray/icons/16x16.png ./static/icons/tray.png",
+    "icons:builder:win": "electron-icon-builder --input=./build/image/builder-win.png --output=./build/image/builder --flatten",
+    "icons:builder:mac": "electron-icon-builder --input=./build/image/builder-mac.png --output=./build/image/builder --flatten",
+    "icons:win": "npm run icons:logo && npm run icons:window && npm run icons:loading && npm run icons:tray:win && npm run icons:builder:win",
+    "icons:mac": "npm run icons:logo && npm run icons:window && npm run icons:loading && npm run icons:tray:mac && npm run icons:builder:mac",
+    "start": "node ./build/before_build_for_dev.js&&nodemon --exec electron . --ext .json,.js,.css,.html",
+    "local:win": "set MAIN_WINDOW_LOCAL=1 && npm run start",
+    "local:mac": "export MAIN_WINDOW_LOCAL=1 && npm run start",
+    "dev:win": "npm run start",
+    "dev:mac": "npm run start",
+    "build": "electron-builder",
+    "build:win": "npm run icons:win && electron-builder --windows",
+    "build:mac": "npm run icons:mac && electron-builder --mac"
+  },
+  "author": "zyy",
+  "license": "ISC",
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "ini": "^4.1.1",
+    "net-proxied": "^1.0.1",
+    "node-machine-id": "^1.1.12",
+    "qs": "^6.11.2",
+    "request": "^2.88.2",
+    "systeminformation": "^5.18.9",
+    "tcp-ping": "^0.1.1",
+    "xfuture": "^1.6.3"
+  },
+  "devDependencies": {
+    "@electron/notarize": "^2.1.0",
+    "cross-env": "^7.0.3",
+    "electron": "^25.3.0",
+    "electron-builder": "^24.4.0",
+    "electron-icon-builder": "^2.0.1",
+    "nodemon": "^3.0.1"
+  },
+  "build": {
+    "appId": "xyz.dragon.www",
+    "productName": "V2BDemo",
+    "artifactName": "V2BDemo-setup-${os}-${arch}-v${version}.${ext}",
+    "copyright": "Copyright © 2022 api.mdkpbk.xyz All Rights Reserved",
+    "extraResources": [
+      "static/icons/**",
+      "static/loading/**",
+      "static/client/**",
+      "static/xfuture/**",
+      "static/preloads/**"
+    ],
+    "beforeBuild": "build/before_build.js",
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false,
+      "installerIcon": "build/image/builder/icons/icon.ico",
+      "installerHeaderIcon": "build/image/builder/icons/icon.ico"
+    },
+    "win": {
+      "icon": "build/image/builder/icons/icon.icns",
+      "requestedExecutionLevel": "highestAvailable",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "dmg": {
+      "sign": false,
+      "icon": "build/image/builder/icons/icon.icns",
+      "background": "build/image/install-mac.png",
+      "contents": [
+        {
+          "x": 300,
+          "y": 130,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 70,
+          "y": 130,
+          "type": "file"
+        }
+      ],
+      "window": {
+        "x": 400,
+        "y": 200,
+        "width": 405,
+        "height": 300
+      }
+    },
+    "mac": {
+      "icon": "build/image/builder/icons/icon.icns",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "target": {
+        "target": "dmg",
+        "arch": [
+          "x64",
+          "arm64"
+        ]
+      }
+    }
+  }
+}
