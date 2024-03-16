@@ -55,7 +55,7 @@ const mainWindowNew = () => {
     })
   } else {
     if (process.env.MAIN_WINDOW_LOCAL) {
-      mainWindow.loadURL('http://127.0.0.1:10001').catch(err=>{
+      mainWindow.loadURL('http://localhost:10001').catch(err=>{
       dialog.showErrorBox('加载页面失败', err.toString())
       })
     } else {
