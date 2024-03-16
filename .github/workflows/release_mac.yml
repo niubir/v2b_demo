@@ -1,0 +1,41 @@
+name: Release Mac
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+jobs:
+  release:
+    name: Release Mac flow
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com/
+
+      - name: Build web
+        working-directory: ./web
+        run: |
+          npm install
+          npm run build
+
+      - name: Build box
+        working-directory: ./box
+        run: |
+          npm install
+          npm run build:mac
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            box/dist/*-arm64-*.dmg
+            box/dist/*-x64-*.dmg

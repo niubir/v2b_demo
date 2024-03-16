@@ -1,0 +1,41 @@
+name: Release Windows
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+jobs:
+  release:
+    name: Release Windows flow
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com/
+
+      - name: Build web
+        working-directory: ./web
+        run: |
+          npm install
+          npm run build
+
+      - name: Build box
+        working-directory: ./box
+        run: |
+          npm install
+          npm run build:win
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            box/dist/*-arm64-*.exe
+            box/dist/*-x64-*.exe
